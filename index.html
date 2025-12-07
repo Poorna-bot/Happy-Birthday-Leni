@@ -10,7 +10,7 @@
         --neon-pink: #ff4081;
         --neon-purple: #e056fd;
         --text-white: #ffffff;
-        --glass-dark: rgba(20, 20, 20, 0.65); /* Dark Blur */
+        --glass-dark: rgba(20, 20, 20, 0.65);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,7 +19,6 @@
         height: 100vh;
         overflow: hidden;
         font-family: 'Poppins', sans-serif;
-        /* Dark Romantic Background */
         background: radial-gradient(circle at center, #2e003e 0%, #000000 100%);
         display: flex;
         justify-content: center;
@@ -38,26 +37,20 @@
     }
 
     @keyframes scatterFade {
-        0% { 
-            transform: translate(0, 0) scale(0.5); 
-            opacity: 0; 
-        }
+        0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
         20% { opacity: 0.8; }
-        100% { 
-            transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(var(--rot)); 
-            opacity: 0; 
-        }
+        100% { transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(var(--rot)); opacity: 0; }
     }
 
-    /* DARK BLURRED CARD */
+    /* CARD STYLE */
     .card {
         position: relative;
         z-index: 10;
         background: var(--glass-dark);
-        backdrop-filter: blur(10px); /* Strong Blur */
+        backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.15); /* Subtle border */
-        box-shadow: 0 0 40px rgba(224, 86, 253, 0.2); /* Purple Glow */
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 40px rgba(224, 86, 253, 0.2);
         border-radius: 25px;
         padding: 50px 35px;
         width: 90%;
@@ -66,13 +59,8 @@
         transition: transform 0.3s;
     }
 
-    .card:hover {
-        border-color: rgba(255, 64, 129, 0.4);
-        box-shadow: 0 0 50px rgba(255, 64, 129, 0.3);
-    }
-
     h3 {
-        font-family: 'Parisienne', cursive; /* Elegant Font */
+        font-family: 'Parisienne', cursive;
         font-size: 2.5rem;
         background: linear-gradient(to right, #fff, #ff4081, #e056fd);
         -webkit-background-clip: text;
@@ -89,7 +77,6 @@
         letter-spacing: 0.5px;
     }
 
-    /* INPUT STYLE */
     input {
         width: 100%;
         padding: 15px;
@@ -109,7 +96,6 @@
         box-shadow: 0 0 15px rgba(255, 64, 129, 0.4);
     }
 
-    /* BUTTON STYLE */
     button {
         margin-top: 20px;
         width: 100%;
@@ -130,7 +116,6 @@
         box-shadow: 0 10px 30px rgba(255, 64, 129, 0.6);
     }
 
-    /* WISH SECTION */
     .wish-content {
         display: none;
         animation: glowIn 1.2s ease;
@@ -150,14 +135,16 @@
         margin-top: 20px;
         line-height: 1.8;
         color: #eee;
-        max-height: 300px;
+        max-height: 350px;
         overflow-y: auto;
+        font-size: 0.95rem;
     }
 
+    /* PULSE ANIMATION CLASS */
     .heart-pulse {
         display: inline-block;
-        color: #ff4081;
         animation: pulse 1s infinite;
+        /* Emojis will inherit this animation */
     }
 
     @keyframes pulse {
@@ -174,11 +161,11 @@
     </audio>
 
     <div class="card">
-        
+
         <div id="loginSection">
             <h3>Happy Birthday Leni 💞</h3>
             <p>A little Magic For You.<br>Enter your birthday to open.</p>
-            
+
             <input type="password" id="password" placeholder="DD/MM">
             <button onclick="unlock()">View Birthday Wish ✨</button>
             <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 15px;">Hint: Your Special Day</p>
@@ -186,18 +173,7 @@
 
         <div id="wishSection" class="wish-content">
             <h1>Happy Birthday! 🎉</h1>
-            
-            <div class="message-box">
-                <p><b>My Dearest Leni,</b></p>
-                <br>
-                <p>✨🎂Happy Birthday! 🎂✨</p>
-                <p>Wishing a fantastic birthday to the craziest,yet best friend one could ask for.</p>
-                <p>I won't ask your age, but I definitely expect a big cake!.🎂🎉✨</p>
-                <p> I wish you great success in your studies and a life full of happiness.🎉✨</p>
-                <br>
-                <p><i>With Love,<br>Poorna. <span class="heart-pulse">🫂✨</span></i></p>
-            </div>
-            
+            <div id="fullMessageContainer" class="message-box"></div>
             <button onclick="location.reload()" style="background: rgba(255,255,255,0.1); margin-top: 15px;">Close</button>
         </div>
 
@@ -207,38 +183,75 @@
         // --- PASSWORD ---
         const PASSWORD = "12/09"; 
         const EMOJIS = ["💞", "🎂", "🎉", "✨", "🌸", "💜"];
-        // ----------------
+        
+        // --- FULL MESSAGE CONTENT ---
+        // දැන් හැම Emoji එකක්ම <span class="heart-pulse"> ඇතුලේ දමා ඇත.
+        const fullMessageHTML = `
+        <b>My Dearest Leni,</b><br><br>
+        <span class="heart-pulse">✨🎂</span> Happy Birthday! <span class="heart-pulse">🎂✨</span><br>
+        Wishing a fantastic birthday to the craziest, yet nice friend one could ask for.<br>
+        I won't ask your age, but I definitely expect a big cake! <span class="heart-pulse">🎂🎉✨</span><br><br>
+        I wish you great success in your studies and a happy life. <span class="heart-pulse">🎉✨</span><br><br>
+        <i>With Love,<br>Poorna. <span class="heart-pulse">🫂✨</span></i>
+        `;
 
-        // 1. SCATTER ANIMATION LOGIC
+        var i = 0;
+        var speed = 40;
+
+        // 1. SCATTER ANIMATION
         function createScatteredEmoji() {
             const el = document.createElement('div');
             el.classList.add('scatter-emoji');
             el.innerText = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-            
-            // Random Start Position
             el.style.left = Math.random() * 100 + 'vw';
             el.style.top = Math.random() * 100 + 'vh';
-
-            // Random Movement Direction (CSS Variables)
-            const xMove = (Math.random() - 1.0) * 200 + 'px'; // Move -100px to +100px
+            const xMove = (Math.random() - 1.0) * 200 + 'px'; 
             const yMove = (Math.random() - 1.0) * 200 + 'px';
             const rot = (Math.random() * 360) + 'deg';
-
             el.style.setProperty('--tx', xMove);
             el.style.setProperty('--ty', yMove);
             el.style.setProperty('--rot', rot);
-            
             document.body.appendChild(el);
-
-            // Remove after animation
             setTimeout(() => el.remove(), 4000);
         }
-
-        // Create emojis continuously
         setInterval(createScatteredEmoji, 300);
 
+        // 2. UPDATED SMART TYPEWRITER FUNCTION
+        function typeWriter() {
+            if (i < fullMessageHTML.length) {
+                let char = fullMessageHTML.charAt(i);
+                
+                if (char === '<') {
+                    // Span Tag එකක් දැක්කොත් මුළු කොටසම (Emoji එක්කම) එකපාර ගන්නවා
+                    if (fullMessageHTML.substr(i, 5) === "<span") {
+                        let endSpanIndex = fullMessageHTML.indexOf("</span>", i);
+                        if (endSpanIndex !== -1) {
+                            // සම්පූර්ණ <span ...>...</span> කොටසම එකපාර Add කරනවා
+                            let fullSpan = fullMessageHTML.substring(i, endSpanIndex + 7);
+                            document.getElementById("fullMessageContainer").innerHTML += fullSpan;
+                            i = endSpanIndex + 7;
+                        }
+                    } else {
+                        // සාමාන්‍ය Tag එකක් නම් (Example: <br>, <b>)
+                        let tag = "";
+                        while (fullMessageHTML.charAt(i) !== '>' && i < fullMessageHTML.length) {
+                            tag += fullMessageHTML.charAt(i);
+                            i++;
+                        }
+                        tag += '>';
+                        i++;
+                        document.getElementById("fullMessageContainer").innerHTML += tag;
+                    }
+                    setTimeout(typeWriter, 10); // Tags ඉක්මනට පනින්න
+                } else {
+                    document.getElementById("fullMessageContainer").innerHTML += char;
+                    i++;
+                    setTimeout(typeWriter, speed);
+                }
+            }
+        }
 
-        // 2. UNLOCK LOGIC
+        // 3. UNLOCK LOGIC
         function unlock() {
             const input = document.getElementById('password');
             const music = document.getElementById('bgMusic');
@@ -247,11 +260,13 @@
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('wishSection').style.display = 'block';
                 music.play().catch(()=>{});
-                
-                // Huge Blast on Unlock
-                for(let i=0; i<50; i++) {
-                    setTimeout(createScatteredEmoji, i*20);
+
+                for(let k=0; k<50; k++) {
+                    setTimeout(createScatteredEmoji, k*20);
                 }
+
+                setTimeout(typeWriter, 500);
+
             } else {
                 input.style.borderColor = "#ff4081";
                 input.style.boxShadow = "0 0 15px #ff4081";
